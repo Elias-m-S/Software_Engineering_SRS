@@ -1,0 +1,102 @@
+% LaTeX Template - Projektarbeit
+
+% PREAMBLE
+\documentclass[
+	pdftex,	
+	a4paper,
+	12pt,
+	parskip = half,
+	listof=totoc,
+	bibliography=totoc]
+	{scrartcl}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[headsepline, footsepline]{scrlayer-scrpage}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{geometry}
+\geometry{lmargin=25mm, rmargin=25mm, tmargin=35mm, bmargin=30mm, headheight=40.96432pt}
+\usepackage{setspace}
+\usepackage{acronym}
+\usepackage{here}
+\usepackage{lmodern}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{tabularx}
+\usepackage{booktabs}
+
+
+% META INFORMATION
+
+\newif\ifenglishdeclarations
+\englishdeclarationsfalse
+
+
+
+% LAYOUT
+\pagestyle{scrheadings}
+\clearpairofpagestyles
+\ihead{\includegraphics[height = 1.25 cm]{logos/logo_dhbw.png}}
+\ofoot{\pagemark}
+
+\makeatletter
+\renewcommand\@pnumwidth{2.4em}
+\renewcommand\@tocrmarg{2.4em}
+\makeatother
+
+\addtokomafont{sectioning}{\rmfamily}
+\onehalfspacing
+\newcounter{savepage}
+\newcommand*{\quelle}[1]{\footnotesize ~#1}
+\newcommand{\imgsmall}{0.25\textwidth}
+\newcommand{\imgmedium}{0.5\textwidth}
+\newcommand{\imgbig}{0.75\textwidth}
+\newcommand{\imglarge}{\textwidth}
+
+
+% Color definitions
+\colorlet{punct}{red!60!black}
+\definecolor{background}{HTML}{EEEEEE}
+\definecolor{delim}{RGB}{20,105,176}
+\colorlet{numb}{magenta!60!black}
+\definecolor{deepblue}{rgb}{0,0,0.5}
+\definecolor{deepred}{rgb}{0.6,0,0}
+\definecolor{deepgreen}{rgb}{0,0.5,0}
+
+\DeclareFixedFont{\ttb}{T1}{txtt}{bx}{n}{8}
+\DeclareFixedFont{\ttm}{T1}{txtt}{m}{n}{8}
+
+\hypersetup{colorlinks, citecolor=black, filecolor=black, linkcolor=black, urlcolor=black}
+
+
+
+
+% BODY
+\begin{document}
+
+\pagenumbering{Roman}
+\input{content/00_Titlepage}
+
+\newpage
+\tableofcontents
+
+\newpage
+\pagenumbering{arabic}
+
+\input{content/01_Introduction}
+\input{content/02_SystemOverview}
+\input{content/03_FunctionalRequirements}
+\input{content/04_NonFunctionalRequirements}
+\input{content/05_UseCase}
+\input{content/06_1_UML}
+\input{content/06_2_UML}
+\input{content/06_3_UML}
+\input{content/07_SystemOverview}
+\input{content/08_Quality_Assurance}
+
+\newpage
+\input{content/Abkuerzungen}
+
+\end{document}

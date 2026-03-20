@@ -1,0 +1,49 @@
+# Latex build files
+*.aux
+*.bbl
+*.blg
+*.fls
+*.fdb_latexmk
+*.dpth
+*.md5
+*.auxlock
+
+# Compiled PDF
+*.pdf
+
+# Log files
+*.log
+
+# Synctex
+*.synctex.gz
+*.synctex(busy)
+
+# Biber
+*.bcf
+*.run.xml
+
+# Index files
+*.idx
+*.ilg
+*.ind
+
+# Glossaries
+*.glg
+*.gls
+*.glo
+
+# Navigation files (html)
+*.out
+*.toc
+
+# Misc
+*.bak
+*.tmp
+*.swp
+*~
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+*.swp

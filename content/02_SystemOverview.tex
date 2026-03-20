@@ -1,0 +1,124 @@
+\section{Systemübersicht} 
+\subsection{Produktperspektive}
+Das Nothaltesystem ist ein sicherheitskritisches Subsystem des autonomen Miniatur-LKWs.
+Es arbeitet parallel zur Fahrzeugsteuerung und überwacht kontinuierlich Sensorwerte sowie Operatorbefehle.
+Bei Erreichen definierter Gefährdungszustände greift es mit höchster Priorität ein und überschreibt alle anderen Fahrfunktionen.
+Das System interagiert über ROS, CAN-Kommunikation und Aktor-Schnittstellen mit bestehenden Komponenten wie Lokalisierung, Fahrsteuerung, LiDAR-Sensorik und Motorregelung.
+Es ersetzt nicht die autonome Fahrlogik, sondern ergänzt diese um eine deterministische Notfall- und Sicherheitsmechanik.
+
+\subsection{Systemkontext}
+\label{sec:systemkontext}
+
+Der Systemkontext beschreibt alle externen Komponenten, Akteure und Subsysteme, die mit dem Nothaltesystem interagieren.
+
+\subsubsection{Akteur}
+
+\begin{table}[H]
+  \centering
+  \caption{Menschlicher Akteur des Nothaltesystems}
+  \label{tab:akteur_nothalt}
+  \begin{tabularx}{\textwidth}{lX}
+    \toprule
+    \textbf{Akteur} & \textbf{Beschreibung} \\
+    \midrule
+    Fahrer/Operator &
+    Der Operator kann über verschiedene Eingabegeräte Steuerbefehle,
+    Softstop-Signale und Fahrkommandos an das Nothaltesystem bzw.
+    die Fahrzeugsteuerung senden. Er ist der primäre
+    Mensch–Maschine-Interaktionspartner. \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\subsubsection{Externe Systemkomponenten}
+
+\begin{table}[h]
+  \centering
+  \caption{Externe Systemkomponenten im Kontext des Nothaltesystems}
+  \label{tab:systemkomponenten_nothalt}
+  \begin{tabularx}{\textwidth}{lX}
+    \toprule
+    \textbf{Komponente} & \textbf{Rolle / Interaktion} \\
+    \midrule
+    Fernbedienung &
+    Sendet Fahrbefehle und Softstop-Signale an das Nothaltesystem oder das autonome Fahrsystem. \\
+
+    Autonomes Fahrsystem &
+    Übermittelt Fahrbefehle und erhält den Nothaltstatus zurück. \\
+
+    \texttt{ArduinoMaster} &
+    Übergibt den softwareseitigen Nothaltstatus an das hardwarenahe System. \\
+
+    \texttt{ArduinoSlave} &
+    Setzt Stop-Signale in PWM-Signale um und steuert die Motoren entsprechend. \\
+
+    Antrieb / Motorcontroller &
+    Führt Brems- bzw. Stoppbefehle physikalisch aus. \\
+
+    UI / RViz &
+    Visualisiert Nothaltstatus, Warnungen und ermöglicht ggf. Softstop-Befehle. \\
+
+    Logging / ROS-Bags &
+    Zeichnet Nothalt-Ereignisse und Statusmeldungen für Analysezwecke auf. \\
+
+    Dachwarnleuchte &
+    Erhält ein An-/Aus-Signal zur optischen Warnung bei aktivem Nothalt. \\
+
+    Sensorik (LiDAR, Encoder) &
+    Liefert Umgebungsdaten zur autonomen Erkennung von Gefahrensituationen. \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\subsection{Schnittstellenübersicht}
+\label{sec:schnittstellenuebersicht}
+
+Der Systemkontext weist mehrere klar abgegrenzte Schnittstellen zwischen Nothaltesystem, Fahrzeugsteuerung, Sensorik und Peripherie auf. Die wichtigsten logischen Schnittstellen sind in Tabelle~\ref{tab:schnittstellen_nothalt} zusammengefasst.
+
+\begin{table}[h]
+  \centering
+  \caption{Hauptschnittstellen des Nothaltesystems}
+  \label{tab:schnittstellen_nothalt}
+  \begin{tabular}{p{0.25\textwidth}p{0.65\textwidth}}
+    \hline
+    \textbf{Schnittstelle} & \textbf{Beschreibung} \\
+    \hline
+    Fahrbefehle &
+    Von Fernbedienung oder autonomem Fahrsystem in Richtung
+    Nothaltesystem. Die Fahrbefehle umfassen u.\,a.\ Geschwindigkeits-,
+    Richtungs- und Betriebsmodusvorgaben. \\
+
+    Nothaltstatus (ROS $\rightarrow$ Arduino) &
+    Übergibt sicherheitskritische Nothaltinformationen vom ROS-basierten
+    Nothaltesystem an das Arduino-System, das anschließend den
+    physischen Stopp auslöst (z.\,B.\ Abschalten der Motorfreigabe). \\
+
+    CAN-Signale &
+    Weiterleitung von E-Stop-Informationen zu den relevanten
+    Fahrzeugsteuerungen über den CAN-Bus, damit auch andere
+    Steuergeräte den Nothaltzustand berücksichtigen können. \\
+
+    Warnsignal (Dachleuchte) &
+    Einfaches Ausgangssignal zur optischen Kennzeichnung eines aktiven
+    Nothalts. Bei gesetztem Nothaltstatus wird die Dachwarnleuchte
+    dauerhaft aktiviert. \\
+
+    Sensorströme (Lidar, Encoder) &
+    Eingehende Sensordatenströme, die zur automatisierten
+    Hinderniserkennung sowie zur Bewertung der Fahrzeugbewegung
+    verwendet werden. Dazu zählen insbesondere 2D-/3D-Lidar-Scans
+    und Encoder-Rückmeldungen. \\
+
+    Logging-Daten &
+    Ereignisdaten und Sensordaten, die zur späteren Analyse,
+    Nachvollziehbarkeit und Validierung des Sicherheitsverhaltens
+    persistiert werden (z.\,B.\ als ROS-Bag-Dateien). \\
+    \hline
+  \end{tabular}
+\end{table}
+
+Durch diese Abgrenzung wird deutlich, dass das Nothaltesystem als
+zentrale sicherheitskritische Instanz zwischen Bediener, Fahrzeugregelung,
+Sensorik und sicherheitsrelevanten Aktoren fungiert.
+
+

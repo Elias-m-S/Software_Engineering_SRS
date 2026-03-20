@@ -1,0 +1,73 @@
+Release Notes:
+
+Scope:
+This Document describes the changes in the template for student thesis at RAFI.
+
+Version History:
+_____________________________________________________________________________________________________________
+
+V: 1.0.0
+
+- Initial Version of the template. Derived from Bachelor-Thesis of u59270
+
+_____________________________________________________________________________________________________________
+
+V: 2.0.0
+
+- Change blocking Notice and jurat according to StuPrO 2017
+
+_____________________________________________________________________________________________________________
+
+V: 2.0.1
+
+- Bugfix: Add missing colon at title page
+
+_____________________________________________________________________________________________________________
+
+V: 2.0.2
+
+- Bugfix: Add street of company to the title page
+
+_____________________________________________________________________________________________________________
+
+V: 3.0.0
+
+- Translated to English
+- Fixed hyperlinks being outlined in red
+- Fixed geometry issues with headers
+- Added new command \todoin{some text} for width-conforming inline todo Notes
+
+_____________________________________________________________________________________________________________
+
+V: 3.1.0
+
+- Change statutory declaration and non-disclosure notice according to StuPrO 2021
+- Update statutory declaration to change between type of project work 
+- Added command \arbeit for german version of \work
+
+_____________________________________________________________________________________________________________
+
+V: 3.1.1
+
+ - Fixed alignment of Roman numerals in TOC
+ - Fixed underfull hbox in bibliography and Leitgedanke
+ 
+_____________________________________________________________________________________________________________
+
+V: 3.1.2
+
+ - add Jenkins pipeline
+
+ 
+_____________________________________________________________________________________________________________
+
+V: 3.1.3
+
+ - Fixed bug where footer was pushed down because of a \headheight command
+
+_____________________________________________________________________________________________________________
+
+V: 3.2.0
+
+ - Update revision of the examination regulations
+ - Add option to change between german and english declarations

@@ -1,0 +1,95 @@
+\section{Qualitätssicherung der Anforderungen}
+
+\subsection{Kriterien: Vollständigkeit, Eindeutigkeit, Konsistenz}
+
+Alle funktionalen und nicht-funktionalen Anforderungen wurden anhand folgender Kriterien geprüft:
+
+\begin{itemize}
+    \item \textbf{Vollständigkeit}\\
+    Es wurde sichergestellt, dass sämtliche sicherheitsrelevanten Funktionen (\ac{Hardstop}, \ac{Softstop}, \ac{E-Stop}, Quittierung, Resume, Kriechmodus, Warnsignale, Logging) vollständig beschrieben und durch passende Anforderungen abgedeckt sind.
+
+    \item \textbf{Eindeutigkeit}\\
+    Jede Anforderung wurde so formuliert, dass nur eine mögliche Interpretation zulässig ist. Unklare Begriffe wie „schnell“, „zuverlässig“, „rechtzeitig“ wurden vermieden oder messbar definiert.
+
+    \item \textbf{Nachvollziehbarkeit}\\
+    Anforderungen wurden so strukturiert, dass sie eindeutig auf Use-Cases, UML-Diagramme und Systemfunktionen zurückgeführt werden können. Jede wesentliche Systemfunktion findet sich in mindestens einem Modell wieder.
+
+    \item \textbf{Konsistenz}\\
+    Die Anforderungen wurden auf Widersprüche geprüft. Prioritätsregeln (\ac{Hardstop} > \ac{E-Stop} > \ac{Softstop}) wurden über alle Modelle hinweg einheitlich formuliert. Mehrfach vorkommende Anforderungen wurden zusammengeführt oder harmonisiert.
+
+    \item \textbf{Verifizierbarkeit}\\
+    Alle Anforderungen wurden so definiert, dass sie durch Tests, Simulationen oder statische Analyse überprüfbar sind. Insbesondere sicherheitsrelevante Anforderungen sind mit messbaren Bedingungen versehen.
+\end{itemize}
+
+\subsection{Vorgehen zur Qualitätssicherung}
+
+Zur Sicherstellung der Qualität wurden folgende Schritte durchgeführt:
+
+\begin{itemize}
+    \item \textbf{Iterative Review-Zyklen}\\
+    Anforderungen, Diagramme und Systembeschreibungen wurden mehrfach überarbeitet. Jede neue Modellierung (Use Case, Sequenz-, Zustands- oder Aktivitätsdiagramm) diente als Spiegel zur Überprüfung der Anforderungen.
+
+    \item \textbf{Abgleich mit Use-Case-Modell}\\
+    Für jeden Use-Case wurde geprüft, ob die entsprechenden funktionalen Anforderungen vollständig vorhanden sind.  
+    Beispiele:
+    \begin{itemize}
+        \item „\ac{Hardstop}“ deckt FR-Hardstop ab
+        \item „\ac{Softstop}“ deckt FR-Softstop und FR-Resume ab
+        \item „Hindernis erkennen“ deckt FR-E-Stop ab
+    \end{itemize}
+
+    \item \textbf{Abgleich mit Zustandsdiagrammen}\\
+    Die Zustandsmodelle dienten insbesondere dazu, die Vollständigkeit der Systemreaktionen zu prüfen 
+    (z. B. Verhalten im \ac{Hardstop}, Übergänge im \ac{Softstop} und \ac{E-Stop}, Wiederaufnahmebedingungen).
+
+    \item \textbf{Abgleich mit Sequenzdiagrammen}\\
+    Die Sequenzdiagramme zeigen die tatsächlichen Nachrichtenflüsse und Systeminteraktionen. Dadurch konnten unvollständige oder unpräzise Anforderungen identifiziert und angepasst werden.
+
+    \item \textbf{Validierung durch Architekturabgleich}\\
+    Die Anforderungen wurden mit der Systemarchitektur (ROS-Nodes, CAN-Brücke, Arduino-Mikrocontroller, Motorcontroller, Sensorik) abgeglichen.  
+    Ziel war: jede Anforderung muss technisch realisierbar und logisch zum Systemaufbau passend sein.
+\end{itemize}
+
+\subsection{Verifikation der Anforderungen}
+
+Da im Rahmen dieser Projektarbeit ausschließlich eine Software Requirements Specification erstellt wurde, erfolgt die Verifikation der Anforderungen rein dokumentarisch und modellbasiert. Es wurden keine praktischen Tests oder Implementierungen durchgeführt.
+
+Die Verifikation basiert auf drei Maßnahmen:
+
+\begin{enumerate}
+    \item \textbf{Modellbasierte Prüfung}\\
+    Die UML-Diagramme (Use Case, Aktivität, Zustand, Sequenz) wurden genutzt, um die Anforderungen auf logische Konsistenz, Vollständigkeit und korrektes Systemverhalten zu überprüfen.
+
+    \item \textbf{Dokumentarische Konsistenzprüfung}\\
+    Die Anforderungen wurden iterativ überarbeitet und auf Eindeutigkeit, Widerspruchsfreiheit und klare Zuordnung zu Systemfunktionen geprüft.
+
+    \item \textbf{Abgleich mit der Systemarchitektur}\\
+    Die Anforderungen wurden mit der modellierten Architektur verglichen, um sicherzustellen, dass alle Funktionen technisch sinnvoll abbildbar sind und alle Schnittstellen konsistent beschrieben werden.
+\end{enumerate}
+
+Diese Maßnahmen gewährleisten, dass die spezifizierten Anforderungen nachvollziehbar, konsistent und verifizierbar formuliert sind.
+
+\subsection{Nachvollziehbarkeit (Traceability)}
+
+Zur Sicherstellung der Nachvollziehbarkeit besteht eine direkte Beziehung zwischen:
+
+\begin{itemize}
+    \item funktionalen Anforderungen (FR-xx)
+    \item Use Cases
+    \item Zustandsdiagrammen
+    \item Sequenzdiagrammen
+    \item Architekturkomponenten
+\end{itemize}
+
+Jede sicherheitsrelevante Anforderung taucht in mindestens einem UML-Diagramm wieder auf.
+
+Beispiele:
+
+\begin{itemize}
+    \item FR-HS-xx → Use Case „\ac{Hardstop} betätigen“, Sequenzdiagramm \ac{Hardstop}, Zustandsdiagramm
+    \item FR-SS-xx → Use Case „\ac{Softstop} betätigen“, \ac{Softstop}-Sequenzdiagramm, Zustandsdiagramm
+    \item FR-ES-xx → Use Case „Hindernis erkennen (\ac{E-Stop})“, \ac{E-Stop}-Sequenzdiagramm, Aktivitätsdiagramm
+    \item FR-RM-xx → Substatemaschinen \ac{Softstop}/\ac{E-Stop} + Resume-Sequenzdiagramm
+\end{itemize}
+
+Damit ist gewährleistet, dass jede Anforderung eindeutig auf modellierte Systemfunktionen rückführbar ist.

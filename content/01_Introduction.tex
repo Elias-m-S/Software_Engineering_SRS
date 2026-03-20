@@ -1,0 +1,34 @@
+\section{Einleitung}
+\subsection{Zweck des Dokuments}
+Dieses Dokument spezifiziert vollständig, eindeutig und überprüfbar das Nothaltesystem eines autonom fahrenden Miniatur-LKWs,
+ das im Rahmen der Projektarbeit im Modul Software Engineering an der DHBW Friedrichshafen entwickelt wurde.
+Ziel des Dokuments ist es, alle funktionalen und nicht-funktionalen Anforderungen zu definieren, 
+das Systemverhalten in unterschiedlichen Betriebszuständen klar darzustellen und die Interaktion zwischen Softwarekomponenten, 
+Sensorsystemen und Aktorik präzise zu beschreiben.
+Die Spezifikation dient als Grundlage für Implementierung, Test, Validierung sowie sicherheitsrelevante Bewertung des Systems.
+\subsection{Geltungsbereich des Systems}
+Das in diesem Dokument beschriebene Nothaltesystem umfasst ausschließlich sicherheitsrelevante Funktionen zur Erkennung gefährlicher 
+Situationen und zur unmittelbaren Einleitung geeigneter Reaktionen.
+Dazu gehören:
+\begin{itemize}
+	\item \ac{Hardstop}
+	\item \ac{Softstop}
+	\item \ac{E-Stop}
+	\item Quittierung und Wiederanlauf (\ac{Resume})
+	\item \ac{Kriechmodus}
+	\item Warnsignale (\ac{LED}, Dachleuchte)
+	\item Protokollierung sicherheitsrelevanter Ereignisse
+\end{itemize}
+Nicht Bestandteil des Systems sind:
+\begin{itemize}
+	\item allgemeine Fahrzeugsteuerung
+	\item Navigationsalgorithmen
+	\item Hindernisvermeidung
+	\item Odometrie
+	\item Fahrdynamikregelung
+\end{itemize}
+Das Nothaltesystem arbeitet ergänzend zum autonomen Fahrsystem, besitzt jedoch Vorrang bei sicherheitskritischen Situationen.
+
+
+
+

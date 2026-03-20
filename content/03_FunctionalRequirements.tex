@@ -1,0 +1,205 @@
+\section{Funktionale Anforderungen (FR-xx)}
+\label{sec:functional_requirements}
+
+\subsection{Hardstop (Pilztaster)}
+\label{sec:hardstop}
+
+\textbf{FR-HS-01}\\
+Das System muss eine \ac{Hardstop}-Funktion bereitstellen, die durch den Pilztaster ausgelöst wird.
+
+\textbf{FR-HS-02}\\
+Beim \ac{Hardstop} muss der Slave-Arduino den Motor-\ac{PWM}-Wert sofort auf den kalibrierten Stop-Wert setzen, um die maximale Verzögerung sicherzustellen.
+
+\textbf{FR-HS-03}\\
+Der \ac{Hardstop} muss höchste Priorität besitzen und alle anderen 
+Steuerbefehle außer Kraft setzen (manuell, autonom, \ac{Softstop}, \ac{E-Stop}).
+
+\textbf{FR-HS-04}\\
+Das Fahrzeug darf eine Weiterfahrt erst dann erlauben, wenn:
+\begin{itemize}
+    \item der Pilztaster mechanisch zurückgestellt wurde und
+    \item der \ac{Hardstop}-Zustand softwareseitig zurückgesetzt wurde.
+\end{itemize}
+
+\textbf{FR-HS-05}\\
+Während eines \ac{Hardstop} müssen die Dachwarnleuchten dauerhaft aktiviert sein.
+
+
+% =====================================================================
+\subsection{Softstop (seitlicher Taster + Software)}
+\label{sec:softstop}
+
+\textbf{FR-SS-01}\\
+Das System muss einen Softstop bereitstellen, der durch den seitlichen Nothalt-Taster oder ein Softwarekommando ausgelöst werden kann.
+
+\textbf{FR-SS-02}\\
+Beim Softstop muss das Fahrzeug kontrolliert bis zum Stillstand abgebremst werden.
+
+\textbf{FR-SS-03}\\
+Im Softstop- und Emergency-Stop-Zustand muss das Fahrzeug folgende eingeschränkte Bewegungen erlauben:
+\begin{enumerate}
+    \item Rückwärtsfahrt und Lenken jederzeit erlaubt.
+    \item Vorwärtsfahrt nur im Kriechmodus, wenn
+    \begin{itemize}
+        \item der gemessene Abstand zum Hindernis größer als 10 cm ist und
+        \item der Bediener aktiv eine geringe Vorwärtsbewegung anfordert.
+    \end{itemize}
+    \item Wenn der Abstand $\leq$ 10 cm beträgt, muss Vorwärtsfahrt vollständig blockiert werden.
+\end{enumerate}
+
+\textbf{FR-SS-04}\\
+Der seitliche Taster muss den Softstop-Zustand anzeigen:
+\begin{itemize}
+    \item AUS: kein Softstop aktiv,
+        \item ROT (dauerhaft): Softstop aktiv, Bewegungsrestriktionen aktiv,
+        \item ROT (blinkend, Frequenz: 2 Hz): eingeschränkter Bewegungmodus nach Benutzerbestätigung.
+\end{itemize}
+
+\textbf{FR-SS-05}\\
+Ein \ac{Hardstop} muss einen Softstop jederzeit übersteuern können.
+
+\textbf{FR-SS-06}\\
+Alle Funktionen des Softstops (Auslösen, Aufheben, Umschalten in Kriechmodus) müssen sowohl
+\begin{itemize}
+    \item über den seitlichen Nothalt-Taster am Fahrzeug als auch
+    \item über die Benutzerschnittstelle (UI/RViz)
+\end{itemize}
+auslösbar sein.
+
+
+% =====================================================================
+\subsection{Emergency Stop (E-Stop) – softwarebasierte Hinderniserkennung}
+\label{sec:emergency_stop}
+
+\textbf{FR-ES-01}\\
+Das System muss einen automatischen Emergency Stop auslösen, wenn die Hinderniserkennung ein Objekt innerhalb der kritischen Zone erkennt.
+
+\textbf{FR-ES-02}\\
+Ein Emergency Stop muss in denselben Zustand führen wie ein Softstop (Bremsung, Bewegungseinschränkung, Tasteranzeige).
+
+\textbf{FR-ES-03}\\
+Für die Hinderniserkennung müssen sowohl der 2D-Laserscanner (LaserScan)
+als auch der 3D-Lidar (PointCloud2) berücksichtigt werden.
+
+\textbf{FR-ES-04}\\
+In der kritischen Zone muss eine ODER-Logik gelten: Ein Emergency Stop ist auszulösen,
+sobald mindestens einer der beiden Sensoren ein Hindernis innerhalb der kritischen Entfernung meldet.
+
+\textbf{FR-ES-05}\\
+Es müssen mindestens zwei Abstandszonen definiert werden:
+\begin{itemize}
+    \item Kritische Zone: Emergency Stop wird ausgelöst.
+    \item Warnzone: Es wird eine Vorwarnung ausgegeben, jedoch noch kein Bremsvorgang eingeleitet.
+\end{itemize}
+
+\textbf{FR-ES-06}\\
+Der 3D-Lidar muss softwareseitig auf einen relevanten Sichtbereich (Field-of-View) beschränkt werden, um Fehlalarme von Objekten oberhalb oder außerhalb des Fahrweges zu reduzieren.
+
+\textbf{FR-ES-07}\\
+Wenn zwischen Hinderniserkennung und notwendigem Bremsbeginn mindestens ein Zyklus der Warnsignale aktualisiert werden kann, muss das System vor Beginn des Bremsvorgangs ein Warnsignal ausgeben.
+
+
+% =====================================================================
+\subsection{Warnmodus / Fehlerszenarien}
+\label{sec:warnmodus}
+
+\textbf{FR-WM-01}\\
+Das System muss den Zustand aller für den Emergency Stop verwendeten Sensoren kontinuierlich überwachen.
+
+\textbf{FR-WM-02}\\
+Bei Ausfall oder ungültigen Messwerten eines Sensors muss das System in den Warnmodus wechseln.
+
+\textbf{FR-WM-03}\\
+Im Warnmodus muss das System:
+\begin{itemize}
+    \item fehlerhafte Sensoren ignorieren,
+    \item verbleibende Sensoren verwenden,
+    \item den Bediener sichtbar informieren (z. B. UI, RViz oder Statusanzeige).
+\end{itemize}
+
+\textbf{FR-WM-04}\\
+Fallen alle Sensoren für den Emergency Stop aus, muss das System autonome Fahrmodi blockieren
+und den Bediener auffordern, die Einschränkung zu bestätigen.
+
+
+% =====================================================================
+\subsection{Betriebsarten: automatische vs. manuelle Freigabe}
+\label{sec:release_modes}
+
+\textbf{FR-RM-01}\\
+Das System muss zwei Freigabemodi unterstützen: automatische Freigabe und manuelle Freigabe.
+
+\textbf{FR-RM-02}\\
+Im Modus „automatische Freigabe“ muss ein Softstop/E-Stop aufgehoben werden, sobald
+\begin{itemize}
+    \item das Fahrzeug vollständig steht und
+    \item kein Hindernis mehr in der Nothaltzone erkannt wird.
+\end{itemize}
+
+\textbf{FR-RM-03}\\
+Im Modus „manuelle Freigabe“ darf ein Softstop/E-Stop nur durch eine Benutzeraktion aufgehoben werden (seitlicher Taster oder UI-Kommando).
+
+\textbf{FR-RM-04}\\
+Ein \ac{Hardstop} darf niemals automatisch aufgehoben werden.
+
+
+% =====================================================================
+\subsection{Integration in die bestehende ROS-/Arduino-Architektur}
+\label{sec:integration_architektur}
+
+\textbf{FR-INT-01}\\
+Die Nothalt-Logik muss als ROS-Node auf dem Hauptrechner (Linux, Jetson/NUC) implementiert werden.
+
+\textbf{FR-INT-02}\\
+Der Nothaltzustand muss über ein ROS-Topic veröffentlicht werden, das sowohl vom Truck Bridge Node als auch direkt von ROS-fähigen Arduinos verarbeitet werden kann.
+
+\textbf{FR-INT-03}\\
+Statt UDP-Kommunikation sollen die Arduinos den Nothaltzustand über ROS-Nachrichten empfangen.
+
+\textbf{FR-INT-04}\\
+Die interne Kommunikation zwischen Master- und Slave-Arduino kann weiterhin über den CAN-Bus erfolgen, muss jedoch durch ROS-basierte Zustandsnachrichten ergänzt werden.
+
+\textbf{FR-INT-05}\\
+Der Slave-Arduino muss die empfangenen ROS-Zustandsnachrichten direkt in Motor-PWM-Befehle umsetzen.
+
+
+% =====================================================================
+\subsection{Logging}
+\label{sec:logging}
+
+\textbf{FR-LOG-01}\\
+Das System muss alle Nothalt-Ereignisse (\ac{Softstop}, \ac{Hardstop}, Emergency Stop) protokollieren.
+
+\textbf{FR-LOG-02}\\
+Jedes Nothalt-Ereignis muss mindestens enthalten:
+\begin{itemize}
+    \item Zeitstempel,
+    \item Auslösequelle (Pilz, Taster, Software, Sensorik),
+    \item Sensordaten zum Auslösezeitpunkt (soweit verfügbar),
+    \item Fahrzeugpose und Steuerungsmodus.
+\end{itemize}
+
+\textbf{FR-LOG-03}\\
+Die Protokolle müssen für Entwickler eindeutig nachvollziehbar sein, um Fehlersituationen analysieren zu können.
+
+
+% =====================================================================
+\subsection{Warnleuchten}
+\label{sec:warnleuchten}
+
+\textbf{FR-WL-01}\\
+Die Dachwarnleuchten müssen bei jedem aktiven Nothaltzustand (\ac{Hardstop}, \ac{Softstop}, Emergency Stop) dauerhaft eingeschaltet sein.
+
+\textbf{FR-WL-02}\\
+Betritt ein Hindernis die definierte Warnzone, müssen die Dachwarnleuchten als Frühwarnsignal eingeschaltet werden, noch bevor eine Bremsung eingeleitet wird.
+
+\textbf{FR-WL-03}\\
+Die Warnleuchten dürfen erst dann deaktiviert werden, wenn
+\begin{itemize}
+    \item kein Nothaltzustand mehr aktiv ist und
+    \item keine Warnzone-Bedingung mehr erfüllt ist.
+\end{itemize}
+
+
+
+

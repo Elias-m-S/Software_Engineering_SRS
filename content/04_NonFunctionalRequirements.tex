@@ -1,0 +1,71 @@
+\section{Nicht-funktionale Anforderungen}
+\label{sec:nfr}
+
+\subsection{Architektur}
+\label{sec:nfr_architektur}
+
+\textbf{NFR-ARC-01}\\
+Die Arduinos müssen ROS-kompatible Software ausführen (z. B. micro-ROS), sodass sie vollständig in die bestehende ROS1/ROS2-basierten Systemarchitektur integriert sind.
+
+\textbf{NFR-ARC-02}\\
+Alle Nothalt-relevanten Meldungen müssen als ROS-Nachrichten veröffentlicht werden (z. B. \texttt{/emergency\_stop\_state}, \texttt{/fault\_state}, \texttt{/sensor\_health}).
+
+
+% =====================================================================
+\subsection{Zeitverhalten \& Performance}
+\label{sec:nfr_time}
+
+\textbf{NFR-TIM-01}\\
+Zwischen der Erkennung eines Hindernisses in der kritischen Zone und dem Versand des Nothaltkommandos an den Master-Arduino dürfen maximal 50\,ms vergehen.
+
+\textbf{NFR-TIM-02}\\
+Das System muss sicherstellen, dass das Fahrzeug bei einer Geschwindigkeit von bis zu 0{,}55\,m/s vor einem Hindernis zum Stillstand kommt und dabei einen Sicherheitsabstand von mindestens 20\,cm einhält.
+
+\textbf{NFR-TIM-03}\\
+Die Sensorverarbeitung muss mindestens folgende Raten unterstützen:
+\begin{itemize}
+    \item 2D-Laserscanner: 40\,Hz,
+    \item 3D-Lidar: 20--30\,Hz,
+    \item Encoder: 50\,Hz.
+\end{itemize}
+
+
+% =====================================================================
+\subsection{Sicherheit}
+\label{sec:nfr_safety}
+
+\textbf{NFR-SAF-01}\\
+Im Falle widersprüchlicher oder fehlender Sensordaten muss das System sicher reagieren, indem es entweder in den Warnmodus wechselt oder einen Nothalt durchführt (je nach Situation).
+
+\textbf{NFR-SAF-02}\\
+Die \ac{Hardstop}-Funktion muss unabhängig von der Software zuverlässig funktionieren.
+
+
+% =====================================================================
+\subsection{Zuverlässigkeit}
+\label{sec:nfr_reliability}
+
+\textbf{NFR-REL-01}\\
+Das System soll so ausgelegt sein, dass Fehlbremsungen (False Positives) höchstens 5\,\% betragen.
+
+\textbf{NFR-REL-02}\\
+Nicht erkannte relevante Hindernisse (False Negatives) dürfen höchstens 1\,\% betragen.
+
+
+% =====================================================================
+\subsection{Logging}
+\label{sec:nfr_logging}
+
+\textbf{NFR-LOG-01}\\
+Das Logging-System muss ROS-Bag-Dateien als primäres Speicherformat verwenden.
+
+\textbf{NFR-LOG-02}\\
+Logdaten müssen so lange gespeichert werden, bis
+\begin{itemize}
+    \item der Benutzer sie manuell löscht oder
+    \item sie durch eine automatische Aufräumroutine gelöscht werden.
+\end{itemize}
+Die automatische Aufräumroutine muss Logdateien löschen, die älter als 14 Tage sind.
+
+\textbf{NFR-LOG-03}\\
+Arduinos müssen Sensordaten und Zustandsdaten über ROS-Topics bereitstellen, sodass sie automatisch in ROS-Bags gespeichert werden können.
